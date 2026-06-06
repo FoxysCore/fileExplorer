@@ -1,0 +1,15 @@
+//
+// Created by dimon on 06.06.2026.
+//
+
+#ifndef UNTITLED_FILEEXPLORERMODE_H
+#define UNTITLED_FILEEXPLORERMODE_H
+
+typedef enum {
+    EXPLORER,
+    FILTER_ENTER,
+    FILE_REMOVE,
+    FILE_CREATING,
+} FileExplorerMode;
+
+#endif //UNTITLED_FILEEXPLORERMODE_H
