@@ -25,6 +25,8 @@ class File {
         void create() const;
         void remove() const;
 
+        long getSize() const;
+
         std::vector<File> getChildren(std::string filter, bool showHidden) const;
         std::vector<File> getChildren() const {return this->getChildren("", true);}
 

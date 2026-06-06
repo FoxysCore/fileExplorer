@@ -10,13 +10,13 @@
 #include "FileExplorerMode.h"
 #include "../../Drawable.h"
 #include "../file/File.h"
-
+#include "../../../app/App.h"
 
 class ScreenCategory;
 
 class FileExplorer: public Drawable {
     public:
-        FileExplorer();
+        FileExplorer(App* app);
         void setWorkDir(File workDir);
         void draw(int xOffset, int yOffset, int height, int width) override;
         void onButton(int btn) override;
@@ -26,6 +26,7 @@ class FileExplorer: public Drawable {
         bool isFiltered(int);
 
     private:
+        App* app;
         FileExplorerMode mode = EXPLORER;
         std::vector<File> workDir;
         std::vector<File> selectedFiles;

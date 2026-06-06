@@ -6,4 +6,5 @@ typedef enum {
     FILE_EXPLORER,
     MENU,
     BUTTON_CODE_VIEWER,
+    FILE_DESCRIPTION,
 } DrawableType;

@@ -3,12 +3,11 @@
 //
 
 #include "FileExplorer.h"
-
 #include <format>
-
 #include "../../../utils.h"
+#include "../fileDescription/FileDescription.h"
 
-FileExplorer::FileExplorer() {
+FileExplorer::FileExplorer(App* app): app(app)  {
     this->setWorkDir(File());
 }
 
@@ -152,6 +151,10 @@ void FileExplorer::onButton(int btn) {
         case 72: this->cursorAt = 0; break; //Home
 
         case 27: this->mode = EXPLORER; break; //Esc
+
+        case 9: //TAB
+            this->app->registerDrawable(new FileDescription(app, &this->workDir.at(this->cursorAt)));
+            break;
     }
 
     if (this->mode == FILTER_ENTER) {

@@ -79,3 +79,10 @@ bool File::eqals(File& file) const{
 }
 
 
+long File::getSize() const {
+    if (this->isDirectory()) {return 0;}
+    if (!this->exists()) {return 0;}
+    return std::filesystem::file_size(path);
+}
+
+

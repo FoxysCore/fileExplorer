@@ -115,7 +115,7 @@ void Menu::onEnter() {
                 case 0: this->setMode(MAIN); break;
                 case 1: {
                     int insertPosition = this->app->getSelectedDrawablePosition();
-                    this->app->registerDrawable(new FileExplorer(), insertPosition);
+                    this->app->registerDrawable(new FileExplorer(app), insertPosition);
                     this->app->unregisterDrawable(insertPosition+1);
                     break;
                 }

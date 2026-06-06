@@ -20,4 +20,6 @@ add_executable(untitled main.cpp
         drawable/files/fileManager/FileExplorerMode.h
         drawable/buttonCodeViewer/ButtonCodeViewer.cpp
         drawable/buttonCodeViewer/ButtonCodeViewer.h
+        drawable/files/fileDescription/FileDescription.cpp
+        drawable/files/fileDescription/FileDescription.h
 )
