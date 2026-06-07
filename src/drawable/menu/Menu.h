@@ -12,7 +12,7 @@
 
 class Menu: public Drawable {
     public:
-        Menu(App* app);
+        Menu(App& app);
         void draw(int xOffset, int yOffset, int height, int width) override;
         void onButton(int btn) override;
         DrawableType getType() override;
@@ -23,7 +23,6 @@ class Menu: public Drawable {
         void setMode(MenuMode mode);
 
     private:
-        App* app;
         MenuMode mode = MenuMode::MAIN;
         int selected = 0;
 

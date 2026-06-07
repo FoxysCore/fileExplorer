@@ -4,28 +4,34 @@
 
 #ifndef UNTITLED_APP_H
 #define UNTITLED_APP_H
-#include "../drawable/Drawable.h"
+#include <memory>
+
 #include "../utils/pointedVector/PointedVector.h"
+#include "../drawable/DrawableType.h"
+#include "../drawable/Drawable.h"
 
 class App {
 public:
     App();
+    ~App();
 
-    Drawable* getDrawable(int position);
-    int getDrawableCount() const;
-    int registerDrawable(Drawable* drawable);
-    int registerDrawable(Drawable* drawable, int position);
-    void unregisterDrawable(int position);
+    Drawable& createDrawable(DrawableType type, int position);
+    Drawable& getDrawable(int position);
+    Drawable& getActiveDrawable();
+    int getActiveDrawablePosition();
+    int getDrawableCount();
 
-    int getSelectedDrawablePosition();
+    void removeDrawable(int position);
+    void removeActiveDrawable();
     void selectDrawable(int position);
+
     void onButton(int btn);
 
     void start();
     void stop();
 
 private:
-    PointedVector<Drawable*> drawables = PointedVector<Drawable*>();
+    PointedVector<std::unique_ptr<Drawable>> drawables = PointedVector<std::unique_ptr<Drawable>>();
     bool isRunning = false;
     void draw();
 

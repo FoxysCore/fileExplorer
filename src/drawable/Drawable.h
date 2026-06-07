@@ -7,9 +7,19 @@
 #include <string>
 #include "DrawableType.h"
 
+class App;
+
 class Drawable
 {
+    private:
+        App &app;
+
+    protected:
+        App& getApp() {return app;}
+
     public:
+        Drawable(App& app) : app(app) {}
+        virtual ~Drawable() = default;
         virtual void draw(int xOffset, int yOffset, int height, int width) = 0;
         virtual void onButton(int btn) = 0;
         virtual DrawableType getType() = 0;

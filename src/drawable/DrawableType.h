@@ -2,6 +2,8 @@
 // Created by dimon on 05.06.2026.
 //
 
+#pragma once
+
 typedef enum {
     FILE_EXPLORER,
     MENU,

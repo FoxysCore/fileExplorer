@@ -3,9 +3,9 @@
 //
 
 #include "ButtonCodeViewer.h"
-#include "../../../utils.h"
+#include "../../utils/Terminal.hpp"
 
-ButtonCodeViewer::ButtonCodeViewer(App* app): app(app) {}
+ButtonCodeViewer::ButtonCodeViewer(App& app): Drawable(app) {}
 
 std::string ButtonCodeViewer::getPrompt() {
     return "Button Code Viewer";
@@ -16,11 +16,11 @@ DrawableType ButtonCodeViewer::getType() {
 }
 
 void ButtonCodeViewer::onButton(int btn) {
-    if (btn == 32) this->app->unregisterDrawable(this->app->getSelectedDrawablePosition());
+    if (btn == 32) this->getApp().removeActiveDrawable();
     else this->lastCode = btn;
 }
 
 void ButtonCodeViewer::draw(int xOffset, int yOffset, int height, int width) {
-    drawLine(xOffset, yOffset+1, 33, true, width, "Press SPACE (code 32) to exit");
-    drawLine(xOffset, yOffset+2, 33, false, width, "Last pressed key is " + std::to_string(lastCode));
+    Terminal::drawLine(xOffset, yOffset+1, 33, true, width, "Press SPACE (code 32) to exit");
+    Terminal::drawLine(xOffset, yOffset+2, 33, false, width, "Last pressed key is " + std::to_string(lastCode));
 }

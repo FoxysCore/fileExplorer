@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <fstream>
 
+#include "../../../utils/pointedVector/PointedVector.h"
+
 File::File(const std::filesystem::path& path) {
     this->path = path;
 }
@@ -55,10 +57,10 @@ void File::remove() const {
     std::filesystem::remove_all(path);
 }
 
-std::vector<File> File::getChildren(std::string filter, bool showHidden) const {
-    auto children = std::vector<File>();
+PointedVector<File> File::getChildren(std::string filter, bool showHidden) const {
+    auto children = PointedVector<File>();
 
-    children.push_back(File(this->path.parent_path()));
+    children.add(File(this->path.parent_path()));
     if (!this->isDirectory()) {return children;}
     if (!this->exists()) {return children;}
     std::filesystem::directory_iterator dir_iter(this->getPath());
@@ -67,7 +69,7 @@ std::vector<File> File::getChildren(std::string filter, bool showHidden) const {
         if (!filter.empty() && entry.string().find(filter) == std::string::npos) {continue;}
         if (!showHidden && entry.filename().string().at(0) == '.') {continue;}
 
-        children.push_back(File(entry));
+        children.add(File(entry));
     }
     return children;
 }
@@ -80,7 +82,7 @@ bool File::eqals(File& file) const{
 
 
 long File::getSize() const {
-    if (this->isDirectory()) {return 0;}
+    if (this->isDirectory()) {return this->getChildren().size() - 1;}
     if (!this->exists()) {return 0;}
     return std::filesystem::file_size(path);
 }

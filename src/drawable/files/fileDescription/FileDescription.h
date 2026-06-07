@@ -7,11 +7,12 @@
 
 #include "../../Drawable.h"
 #include "../file/File.h"
-#include "../../../app/App.h"
+#include "../../DrawableType.h"
 
 class FileDescription: public Drawable{
     public:
-        FileDescription(App* app, File* file);
+        FileDescription(App& app);
+        void setFile(File& file);
         void draw(int xOffset, int yOffset, int height, int width) override;
         void onButton(int btn) override;
         DrawableType getType() override;
@@ -19,13 +20,7 @@ class FileDescription: public Drawable{
         bool isInputDirect() override {return false;}
 
     private:
-        App* app;
-
-        bool isDir;
-
-        std::string filename;
-        std::string filepath;
-        long filesize;
+        File file;
 };
 
 

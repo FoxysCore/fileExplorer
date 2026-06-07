@@ -2,44 +2,74 @@
 // Created by dimon on 05.06.2026.
 //
 
+
 #include "App.h"
-#include "../../utils.h"
+
+#include <memory>
+
+#include "../drawable/files/fileExplorer/FileExplorer.h"
 #include "../drawable/menu/Menu.h"
 #include "../utils/pointedVector/PointedVector.h"
 #include "../utils/Terminal.hpp"
+#include "../drawable/DrawableType.h"
+#include "../drawable/files/fileDescription/FileDescription.h"
+#include "../drawable/Drawable.h"
+#include "../drawable/buttonCodeViewer/ButtonCodeViewer.h"
 
 App::App() {
     Terminal::setRawMode();
-    this->registerDrawable(new Menu(this));
+    this->createDrawable(MENU, 0);
 }
 
-Drawable* App::getDrawable(const int position) {
-    return drawables.get(position);
+
+Drawable& App::createDrawable(DrawableType type, int position) {
+    switch (type)
+    {
+    case FILE_EXPLORER:
+        this->drawables.insert(position, std::make_unique<FileExplorer>(*this));
+        break;
+
+    case MENU:
+        this->drawables.insert(position, std::make_unique<Menu>(*this));
+        break;
+
+    case FILE_DESCRIPTION:
+        this->drawables.insert(position, std::make_unique<FileDescription>(*this));
+        break;
+
+    case BUTTON_CODE_VIEWER:
+        drawables.insert(position, std::make_unique<ButtonCodeViewer>(*this));
+        break;
+    }
+
+    return *drawables.get(position);
 }
 
-int App::getDrawableCount() const {
-    return this->drawables.size();
+Drawable& App::getDrawable(int position) {
+    return *drawables.get(position);
 }
 
-int App::registerDrawable(Drawable* drawable) {
-    drawables.add(drawable);
-    return this->drawables.size()-1;
+Drawable& App::getActiveDrawable() {
+    return *drawables.getSelected();
 }
 
-int App::registerDrawable(Drawable* drawable, const int position) {
-    drawables.insert(position, drawable);
-    return this->drawables.size()-1;
-}
-
-void App::unregisterDrawable(const int position) {
-    const Drawable* drawable = drawables.get(position);
-    drawables.remove(position);
-    delete drawable;
-    this->selectDrawable(this->getSelectedDrawablePosition());
-}
-
-int App::getSelectedDrawablePosition() {
+int App::getActiveDrawablePosition() {
     return drawables.getPointer();
+}
+
+int App::getDrawableCount() {
+    return drawables.size();
+}
+
+void App::removeDrawable(int position) {
+    if (drawables.size() == 1) {
+        this->createDrawable(MENU, 1);
+    }
+    drawables.remove(position);
+}
+
+void App::removeActiveDrawable() {
+    drawables.remove(drawables.getPointer());
 }
 
 void App::selectDrawable(int position) {
@@ -52,7 +82,7 @@ void App::start() {
         this->draw();
         this->onButton(Terminal::getButton());
     }
-    clearScreen();
+    Terminal::clearScreen();
 }
 
 void App::stop() {
@@ -60,48 +90,56 @@ void App::stop() {
 }
 
 void App::onButton(int btn) {
-    Drawable* drawable = this->getDrawable(this->getSelectedDrawablePosition());
+    Drawable& drawable = this->getActiveDrawable();
 
-    if (drawable->isInputDirect()) {
-        drawable->onButton(btn);
+    if (drawable.isInputDirect()) {
+        drawable.onButton(btn);
         return;
     }
 
     switch (btn) {
         case 3: this->stop(); return; //CTRL + c
         case 4: this->stop(); return; //CTRL + d
-        case 109: this->registerDrawable(new Menu(this)); this->unregisterDrawable(0); return; //m
-        case 77: this->registerDrawable(new Menu(this)); return; //M
+        case 109: { //m
+                int position = this->getActiveDrawablePosition();
+                this->createDrawable(MENU, position);
+                this->removeDrawable(position+1);
+                return;
+            }
+        case 77: { //M
+                this->createDrawable(MENU, this->getDrawableCount());
+                this->selectDrawable(this->getDrawableCount()-1);
+                return;
+            }
 
-        case 67: this->selectDrawable(this->getSelectedDrawablePosition() + 1); return; //->
-        case 68: this->selectDrawable(this->getSelectedDrawablePosition() - 1); return; //<-
+        case 67: drawables.stepForward(); return; //->
+        case 68: drawables.stepBackward(); return; //<-
 
     }
 
-    drawable->onButton(btn);
+    drawable.onButton(btn);
 }
 
-
 void App::draw() {
-    clearScreen();
+    Terminal::clearScreen();
     auto size = Terminal::getSize();
     int height = size.second, width = size.first;
     int drawableWidth = width/this->getDrawableCount();
 
     for (int space = 0; space < this->getDrawableCount(); space++) {
-        Drawable* drawable = this->getDrawable(space);
+        Drawable& drawable = this->getDrawable(space);
         int drawingX = space*drawableWidth + 1;
 
-        drawLine( //title
+        Terminal::drawLine( //title
             drawingX,
             1,
             33,
-            space == this->getSelectedDrawablePosition(),
+            space == drawables.getPointer(),
             drawableWidth,
-            drawable->getPrompt()
+            drawable.getPrompt()
             );
 
-        drawable->draw( //main frame
+        drawable.draw( //main frame
             drawingX,
             2,
             height-2,
@@ -109,7 +147,9 @@ void App::draw() {
             );
 
         for (int i = 1; i <= height && space != 0; i++) {
-            drawLine(drawableWidth*space, i, 33, false, 100, "|");
+            Terminal::drawLine(drawableWidth*space, i, 33, false, 100, "|");
         }
     }
 }
+
+App::~App() = default;

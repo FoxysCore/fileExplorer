@@ -52,12 +52,12 @@ private:
     }
 
         static void drawLine(int x, int y, int color, bool invert, int width, const std::string& content) {
-            std::cout << "\033[" << y << ";" << x << "H";
-            std::cout << "\033[" << color << "m";
+            std::cout << "\033[" << y << ";" << x << "H " << std::flush;
+            std::cout << "\033[" << color << "m" << std::flush;
             if (invert) {
-                std::cout << "\033[7m";
+                std::cout << "\033[7m" << std::flush;
             }
-            std::cout << content.substr(0, width);
+            std::cout << content.substr(0, width) << std::flush;
             std::cout << "\033[0m" << std::flush;
         }
 

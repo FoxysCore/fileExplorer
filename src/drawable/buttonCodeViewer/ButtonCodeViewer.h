@@ -10,7 +10,7 @@
 
 class ButtonCodeViewer: public Drawable{
     public:
-        ButtonCodeViewer(App* app);
+        ButtonCodeViewer(App& app);
         void draw(int xOffset, int yOffset, int height, int width) override;
         void onButton(int btn) override;
         DrawableType getType() override;

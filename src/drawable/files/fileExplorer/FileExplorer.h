@@ -16,7 +16,7 @@ class ScreenCategory;
 
 class FileExplorer: public Drawable {
     public:
-        FileExplorer(App* app);
+        FileExplorer(App& app);
         void setWorkDir(File workDir);
         void draw(int xOffset, int yOffset, int height, int width) override;
         void onButton(int btn) override;
@@ -26,18 +26,14 @@ class FileExplorer: public Drawable {
         bool isFiltered(int);
 
     private:
-        App* app;
         FileExplorerMode mode = EXPLORER;
-        std::vector<File> workDir;
-        std::vector<File> selectedFiles;
+        PointedVector<File> workDir = PointedVector<File>();
+        PointedVector<File> selectedFiles;
         File workDirFile;
-        int cursorAt = 0;
         bool showHidden = false;
         std::string filter = "";
         std::string fileName = "";
 
-        bool isFiltered(File* file);
-        void normaliseCursor();
         int getSelectedFilePos(File& file);
 };
 

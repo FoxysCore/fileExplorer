@@ -6,7 +6,8 @@
 #define UNTITLED_FILE_H
 #include <filesystem>
 #include <string>
-#include <vector>
+
+#include "../../../utils/pointedVector/PointedVector.h"
 
 class File {
     public:
@@ -27,8 +28,8 @@ class File {
 
         long getSize() const;
 
-        std::vector<File> getChildren(std::string filter, bool showHidden) const;
-        std::vector<File> getChildren() const {return this->getChildren("", true);}
+        PointedVector<File> getChildren(std::string filter, bool showHidden) const;
+        PointedVector<File> getChildren() const {return this->getChildren("", true);}
 
         bool eqals(File& file) const;
 
