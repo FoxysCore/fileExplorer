@@ -3,23 +3,24 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(untitled main.cpp
-        drawable/files/file/File.h
-        drawable/files/fileManager/FileExplorer.cpp
-        drawable/files/fileManager/FileExplorer.h
-        drawable/Drawable.h
-        drawable/DrawableType.h
-        drawable/files/file/File.cpp
-        app/App.cpp
-        app/App.h
+add_executable(untitled src/main.cpp
+        src/drawable/files/file/File.h
+        src/drawable/files/fileManager/FileExplorer.cpp
+        src/drawable/files/fileManager/FileExplorer.h
+        src/drawable/Drawable.h
+        src/drawable/DrawableType.h
+        src/drawable/files/file/File.cpp
+        src/app/App.cpp
+        src/app/App.h
         utils.h
-        drawable/menu/Menu.cpp
-        drawable/menu/Menu.h
-        drawable/menu/MenuMode.h
-        app/terminal/Terminal.hpp
-        drawable/files/fileManager/FileExplorerMode.h
-        drawable/buttonCodeViewer/ButtonCodeViewer.cpp
-        drawable/buttonCodeViewer/ButtonCodeViewer.h
-        drawable/files/fileDescription/FileDescription.cpp
-        drawable/files/fileDescription/FileDescription.h
+        src/drawable/menu/Menu.cpp
+        src/drawable/menu/Menu.h
+        src/drawable/menu/MenuMode.h
+        src/utils/Terminal.hpp
+        src/drawable/files/fileManager/FileExplorerMode.h
+        src/drawable/buttonCodeViewer/ButtonCodeViewer.cpp
+        src/drawable/buttonCodeViewer/ButtonCodeViewer.h
+        src/drawable/files/fileDescription/FileDescription.cpp
+        src/drawable/files/fileDescription/FileDescription.h
+        src/utils/pointedVector/PointedVector.h
 )
