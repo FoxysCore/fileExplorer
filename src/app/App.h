@@ -4,21 +4,20 @@
 
 #ifndef UNTITLED_APP_H
 #define UNTITLED_APP_H
-#include <vector>
 #include "../drawable/Drawable.h"
-#include "terminal/Terminal.hpp"
+#include "../utils/pointedVector/PointedVector.h"
 
 class App {
 public:
     App();
 
     Drawable* getDrawable(int position);
-    int getDrawableCount();
+    int getDrawableCount() const;
     int registerDrawable(Drawable* drawable);
     int registerDrawable(Drawable* drawable, int position);
     void unregisterDrawable(int position);
 
-    int getSelectedDrawablePosition() const;
+    int getSelectedDrawablePosition();
     void selectDrawable(int position);
     void onButton(int btn);
 
@@ -26,9 +25,7 @@ public:
     void stop();
 
 private:
-    int selectedDrawable = 0;
-    Terminal terminal;
-    std::vector<Drawable*> drawables = std::vector<Drawable*>();
+    PointedVector<Drawable*> drawables = PointedVector<Drawable*>();
     bool isRunning = false;
     void draw();
 

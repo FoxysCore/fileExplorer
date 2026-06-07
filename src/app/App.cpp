@@ -3,63 +3,54 @@
 //
 
 #include "App.h"
-#include "../utils.h"
+#include "../../utils.h"
 #include "../drawable/menu/Menu.h"
+#include "../utils/pointedVector/PointedVector.h"
+#include "../utils/Terminal.hpp"
 
-#include "../drawable/files/file/File.h"
-
-App::App() : terminal(Terminal()) {
+App::App() {
+    Terminal::setRawMode();
     this->registerDrawable(new Menu(this));
 }
 
-Drawable* App::getDrawable(int position) {
-    return this->drawables.at(position);
+Drawable* App::getDrawable(const int position) {
+    return drawables.get(position);
 }
 
-int App::getDrawableCount() {
+int App::getDrawableCount() const {
     return this->drawables.size();
 }
 
 int App::registerDrawable(Drawable* drawable) {
-    this->drawables.push_back(drawable);
+    drawables.add(drawable);
     return this->drawables.size()-1;
 }
 
-int App::registerDrawable(Drawable* drawable, int position) {
-    if (position < 0) {position = 0;}
-    if (position > this->getDrawableCount()) {position = this->getDrawableCount();}
-    this->drawables.insert(this->drawables.begin() + position, drawable);
+int App::registerDrawable(Drawable* drawable, const int position) {
+    drawables.insert(position, drawable);
     return this->drawables.size()-1;
 }
 
-void App::unregisterDrawable(int position) {
-    Drawable* drawable = this->drawables.at(position);
-    this->drawables.erase(this->drawables.begin() + position);
+void App::unregisterDrawable(const int position) {
+    const Drawable* drawable = drawables.get(position);
+    drawables.remove(position);
     delete drawable;
     this->selectDrawable(this->getSelectedDrawablePosition());
 }
 
-int App::getSelectedDrawablePosition() const {
-    return this->selectedDrawable;
+int App::getSelectedDrawablePosition() {
+    return drawables.getPointer();
 }
 
 void App::selectDrawable(int position) {
-    if (this->getDrawableCount() == 0) {
-        this->selectedDrawable = 0;
-        return;
-    }
-    while (position < 0) {position += this->getDrawableCount();}
-    position = position%this->getDrawableCount();
-    this->selectedDrawable = position;
+    drawables.select(position);
 }
 
 void App::start() {
-    this->terminal.getSize();
-
     this->isRunning = true;
     while (isRunning) {
         this->draw();
-        this->onButton(terminal.getButton());
+        this->onButton(Terminal::getButton());
     }
     clearScreen();
 }
@@ -93,7 +84,7 @@ void App::onButton(int btn) {
 
 void App::draw() {
     clearScreen();
-    auto size = this->terminal.getSize();
+    auto size = Terminal::getSize();
     int height = size.second, width = size.first;
     int drawableWidth = width/this->getDrawableCount();
 
