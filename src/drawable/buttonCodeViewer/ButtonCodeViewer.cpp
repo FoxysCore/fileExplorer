@@ -16,7 +16,11 @@ DrawableType ButtonCodeViewer::getType() {
 }
 
 void ButtonCodeViewer::onButton(int btn) {
-    if (btn == 32) this->getApp().removeActiveDrawable();
+    if (btn == 32) {
+        int selected = this->getApp().getActiveDrawablePosition();
+        this->getApp().createDrawable(MENU, selected);
+        this->getApp().removeDrawable(selected+1);
+    }
     else this->lastCode = btn;
 }
 
