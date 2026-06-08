@@ -162,7 +162,7 @@ void FileExplorer::onButton(int btn) {
 
             File selectedFile = this->workDir.getSelected();
             ((FileDescription&) desc).setFile(selectedFile);
-
+            break;
         }
 
     case 90: { //shift + TAB
@@ -175,6 +175,7 @@ void FileExplorer::onButton(int btn) {
             File selectedFile = this->workDir.getSelected();
             ((FileReader&) desc).setFile(selectedFile);
             this->getApp().selectDrawable(place);
+            break;
             }
     }
 
