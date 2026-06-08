@@ -87,4 +87,18 @@ long File::getSize() const {
     return std::filesystem::file_size(path);
 }
 
+std::string File::read() const {
+    if (!this->exists() || !this->isFile()) {return "nothing to read";}
+    if (this->getSize() > 1024*128) {return "too big to read :(";}
+
+    std::ifstream file(this->path, std::ios::binary | std::ios::ate);
+    std::streamsize size = file.tellg();
+
+    file.seekg(0, std::ios::beg);
+    std::string content(size, '\0');
+
+    if (size > 0) {file.read(content.data(), size);}
+
+    return content;
+}
 

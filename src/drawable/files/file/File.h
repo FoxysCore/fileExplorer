@@ -28,6 +28,8 @@ class File {
 
         long getSize() const;
 
+        std::string read() const;
+
         PointedVector<File> getChildren(std::string filter, bool showHidden) const;
         PointedVector<File> getChildren() const {return this->getChildren("", true);}
 

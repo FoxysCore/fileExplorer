@@ -9,4 +9,5 @@ typedef enum {
     MENU,
     BUTTON_CODE_VIEWER,
     FILE_DESCRIPTION,
+    FILE_READER,
 } DrawableType;

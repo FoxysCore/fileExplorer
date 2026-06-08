@@ -15,6 +15,7 @@
 #include "../drawable/files/fileDescription/FileDescription.h"
 #include "../drawable/Drawable.h"
 #include "../drawable/buttonCodeViewer/ButtonCodeViewer.h"
+#include "../drawable/files/fileReader/FileReader.h"
 
 App::App() {
     Terminal::setRawMode();
@@ -39,6 +40,10 @@ Drawable& App::createDrawable(DrawableType type, int position) {
 
     case BUTTON_CODE_VIEWER:
         drawables.insert(position, std::make_unique<ButtonCodeViewer>(*this));
+        break;
+
+    case FILE_READER:
+        drawables.insert(position, std::make_unique<FileReader>(*this));
         break;
     }
 

@@ -6,6 +6,7 @@
 #include <format>
 #include "../../../utils/Terminal.hpp"
 #include "../fileDescription/FileDescription.h"
+#include "../fileReader/FileReader.h"
 
 FileExplorer::FileExplorer(App& app): Drawable(app)  {
     this->setWorkDir(File());
@@ -163,6 +164,18 @@ void FileExplorer::onButton(int btn) {
             ((FileDescription&) desc).setFile(selectedFile);
 
         }
+
+    case 90: { //shift + TAB
+            int place = this->getApp().getActiveDrawablePosition() + 1;
+            Drawable& desc = this->getApp().createDrawable(
+                FILE_READER,
+                place
+            );
+
+            File selectedFile = this->workDir.getSelected();
+            ((FileReader&) desc).setFile(selectedFile);
+            this->getApp().selectDrawable(place);
+            }
     }
 
     if (this->mode == FILTER_ENTER) {

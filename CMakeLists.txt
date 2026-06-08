@@ -22,4 +22,6 @@ add_executable(untitled src/main.cpp
         src/drawable/files/fileDescription/FileDescription.cpp
         src/drawable/files/fileDescription/FileDescription.h
         src/utils/pointedVector/PointedVector.h
+        src/drawable/files/fileReader/FileReader.cpp
+        src/drawable/files/fileReader/FileReader.h
 )
